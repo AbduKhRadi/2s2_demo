@@ -1,0 +1,46 @@
+title: Ransomware File Encryption Detection
+
+id: b8c3d4e5-f6a7-4b5c-9d8e-0f1a2b3c4d5e
+
+description: Detects potential ransomware activity through rapid file encryption patterns and suspicious file extensions.
+
+references:
+  - https://attack.mitre.org/techniques/T1486/
+  - https://www.cisa.gov/stopransomware
+
+status: stable
+
+author: Security Team
+
+date: 2024/03/15
+
+tags:
+  - attack.impact
+  - attack.t1486
+
+logsource:
+  category: file_event
+  product: windows
+
+detection:
+  selection:
+    FileExtension|endswith:
+      - '.encrypted'
+      - '.locked'
+      - '.crypto'
+      - '.crypt'
+    FileOperation|contains:
+      - 'Create'
+      - 'Write'
+    ProcessName|contains:
+      - 'cmd.exe'
+      - 'powershell.exe'
+      - 'wscript.exe'
+  condition: selection
+
+falsepositives:
+  - Backup software
+  - File encryption tools
+  - Security software
+
+level: high 
