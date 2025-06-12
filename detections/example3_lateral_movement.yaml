@@ -1,0 +1,46 @@
+title: Windows Lateral Movement Detection
+
+id: c9d4e5f6-a7b8-4c5d-9e0f-1a2b3c4d5e6f
+
+description: Detects potential lateral movement attempts using common Windows administrative tools and protocols.
+
+references:
+  - https://attack.mitre.org/techniques/T1021/
+  - https://www.microsoft.com/security/blog/2020/03/05/human-operated-ransomware-attacks/
+
+status: stable
+
+author: Security Team
+
+date: 2024/03/15
+
+tags:
+  - attack.lateral_movement
+  - attack.t1021
+
+logsource:
+  category: process_creation
+  product: windows
+
+detection:
+  selection:
+    ProcessName|contains:
+      - 'psexec.exe'
+      - 'wmic.exe'
+      - 'wmiexec.exe'
+      - 'at.exe'
+      - 'schtasks.exe'
+    CommandLine|contains:
+      - '/c'
+      - '/s'
+      - '\\\\'
+      - 'net use'
+      - 'net share'
+  condition: selection
+
+falsepositives:
+  - System administration
+  - Remote management tools
+  - Automated deployment
+
+level: high 

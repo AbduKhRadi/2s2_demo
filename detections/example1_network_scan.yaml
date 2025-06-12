@@ -1,0 +1,46 @@
+title: Network Port Scanning Detection
+
+id: a7b2c3d4-e5f6-4a5b-8c7d-9e0f1a2b3c4d
+
+description: Detects common network port scanning activities using tools like nmap, masscan, or custom scripts.
+
+references:
+  - https://attack.mitre.org/techniques/T1046/
+  - https://www.sans.org/reading-room/whitepapers/detection/port-scanning-detection-33969
+
+status: stable
+
+author: Security Team
+
+date: 2024/03/15
+
+tags:
+  - attack.discovery
+  - attack.t1046
+
+logsource:
+  category: network_traffic
+  product: network
+
+detection:
+  selection:
+    Protocol|contains:
+      - 'TCP'
+      - 'UDP'
+    DestinationPort|in:
+      - '21-25'
+      - '80'
+      - '443'
+      - '445'
+      - '3389'
+    EventType|contains:
+      - 'Connection Attempt'
+      - 'Port Scan'
+  condition: selection
+
+falsepositives:
+  - Network monitoring tools
+  - Vulnerability scanners
+  - Security assessment tools
+
+level: medium 
