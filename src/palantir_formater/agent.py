@@ -114,66 +114,14 @@ def main():
     """
     Main function to run the agent from the command line.
     """
-    yaml_text = """
-    title: PowerShell Download From URL
 
-id: d60e8bd9-a305-4dd3-a2fb-4c392c95f52f
-
-description: Detects PowerShell command used to download files from a URL using common methods.
-
-references:
-
-  - <https://threatpost.com/powershell-security-pitfalls/157345/>
-  - <https://attack.mitre.org/techniques/T1059/001/>
-status: stable
-
-author: Florian Roth
-
-date: 2022/04/10
-
-tags:
-
-  - attack.execution
-
-  - attack.t1059.001
-
-logsource:
-
-  category: process_creation
-
-  product: windows
-
-detection:
-
-  selection:
-
-    Image|endswith:
-
-      - '\\powershell.exe'
-
-      - '\\pwsh.exe'
-
-    CommandLine|contains:
-
-      - 'Invoke-WebRequest'
-
-      - 'Invoke-Expression'
-
-      - 'System.Net.WebClient'
-
-  condition: selection
-
-falsepositives:
-
-  - Admin scripts
-
-  - Penetration testing activity
-
-level: high
-
-    """
 
     # --- The following lines have been activated ---
+    
+    with open("detections/example1_network_scan.yaml", "r") as f:
+        yaml_text = f.read()
+        
+    print(yaml_text)
 
     # 1. Initialize the agent
     agent = DetectionDocAgent()
@@ -199,3 +147,5 @@ level: high
 
 if __name__ == "__main__":
     main()
+    
+    
